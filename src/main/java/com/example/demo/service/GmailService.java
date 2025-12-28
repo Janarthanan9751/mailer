@@ -1,27 +1,28 @@
 
 package com.example.demo.service;
 
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.services.gmail.Gmail;
-import com.google.api.services.gmail.model.Message;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.Properties;
 
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.GeneralSecurityException;
-import java.util.Properties;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.Base64;
+import com.google.api.services.gmail.Gmail;
+import com.google.api.services.gmail.model.Message;
 
 
 @Service
@@ -41,34 +42,17 @@ public class GmailService {
     private String clientSecret;
 
     private Credential getCredentials() throws IOException, GeneralSecurityException {
-        NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-        
-        GoogleCredential credential = new GoogleCredential.Builder()
-                .setTransport(httpTransport)
+        return new GoogleCredential.Builder()
+                .setTransport(GoogleNetHttpTransport.newTrustedTransport())
                 .setJsonFactory(JSON_FACTORY)
                 .setClientSecrets(clientId, clientSecret)
-                .build();
-        
-        credential.setRefreshToken(refreshToken);
-        return credential;
+                .build()
+                .setRefreshToken(refreshToken);
     }
 
     public void sendResumeEmail(String recipientEmail) throws IOException, GeneralSecurityException, MessagingException {
-        // Validate refresh token
-        if (refreshToken == null || refreshToken.isEmpty() || refreshToken.equals("your-refresh-token-here")) {
-            throw new IllegalStateException("Invalid refresh token. Please update GMAIL_REFRESH_TOKEN in application.properties with a valid token. See GET_REFRESH_TOKEN.md for instructions.");
-        }
-        
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Credential credential = getCredentials();
-        
-        // Try to refresh the token to validate it
-        try {
-            credential.refreshToken();
-        } catch (Exception e) {
-            throw new IOException("Failed to refresh OAuth token. Please verify your refresh token is valid and not expired. Error: " + e.getMessage(), e);
-        }
-        
         Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
                 .setApplicationName(APPLICATION_NAME)
                 .build();
