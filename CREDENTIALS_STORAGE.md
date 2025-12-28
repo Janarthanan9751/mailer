@@ -16,9 +16,9 @@ This file:
 
 **File contents:**
 ```properties
-gmail.client.id=89909255216-qk0te5fakm5l0svs40hcau4o4bpo1q86.apps.googleusercontent.com
-gmail.client.secret=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
-GMAIL_REFRESH_TOKEN=1//04L8gaFu7zL99CgYIARAAGAQSNwF-L9IrcmWhOzm1JbfmAP-508k8NspMzDrafJnlS05LI-7bW3QfMsC0UWUC3I3P40ntbENE1qE
+gmail.client.id=your-client-id-here
+gmail.client.secret=your-client-secret-here
+GMAIL_REFRESH_TOKEN=your-refresh-token-here
 ```
 
 ## 2. **Render Deployment** (Production)
@@ -29,9 +29,9 @@ Set these 3 environment variables in Render:
 
 | Variable Name | Value |
 |--------------|-------|
-| `GMAIL_CLIENT_ID` | `89909255216-qk0te5fakm5l0svs40hcau4o4bpo1q86.apps.googleusercontent.com` |
-| `GMAIL_CLIENT_SECRET` | `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` |
-| `GMAIL_REFRESH_TOKEN` | `1//04L8gaFu7zL99CgYIARAAGAQSNwF-L9IrcmWhOzm1JbfmAP-508k8NspMzDrafJnlS05LI-7bW3QfMsC0UWUC3I3P40ntbENE1qE` |
+| `GMAIL_CLIENT_ID` | `your-client-id-here` |
+| `GMAIL_CLIENT_SECRET` | `your-client-secret-here` |
+| `GMAIL_REFRESH_TOKEN` | `your-refresh-token-here` (get from OAuth Playground) |
 
 **How to set in Render:**
 1. Go to your Render dashboard
