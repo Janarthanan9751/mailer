@@ -1,4 +1,4 @@
-com/example/demo/DemoApplication.class
-com/example/demo/controller/ResumeController.class
-com/example/demo/DemoApplication$HelloworldController.class
-com/example/demo/service/GmailService.class
+com\example\demo\DemoApplication$HelloworldController.class
+com\example\demo\controller\ResumeController.class
+com\example\demo\DemoApplication.class
+com\example\demo\service\GmailService.class
