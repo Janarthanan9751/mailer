@@ -5,6 +5,6 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 
-# Sensitive configuration files
-src/main/resources/application.properties
-target/classes/application.properties
+# Sensitive configuration files (local overrides)
+src/main/resources/application-local.properties
+target/classes/application-local.properties
