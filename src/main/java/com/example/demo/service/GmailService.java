@@ -41,17 +41,34 @@ public class GmailService {
     private String clientSecret;
 
     private Credential getCredentials() throws IOException, GeneralSecurityException {
-        return new GoogleCredential.Builder()
-                .setTransport(GoogleNetHttpTransport.newTrustedTransport())
+        NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        
+        GoogleCredential credential = new GoogleCredential.Builder()
+                .setTransport(httpTransport)
                 .setJsonFactory(JSON_FACTORY)
                 .setClientSecrets(clientId, clientSecret)
-                .build()
-                .setRefreshToken(refreshToken);
+                .build();
+        
+        credential.setRefreshToken(refreshToken);
+        return credential;
     }
 
     public void sendResumeEmail(String recipientEmail) throws IOException, GeneralSecurityException, MessagingException {
+        // Validate refresh token
+        if (refreshToken == null || refreshToken.isEmpty() || refreshToken.equals("your-refresh-token-here")) {
+            throw new IllegalStateException("Invalid refresh token. Please update GMAIL_REFRESH_TOKEN in application.properties with a valid token. See GET_REFRESH_TOKEN.md for instructions.");
+        }
+        
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Credential credential = getCredentials();
+        
+        // Try to refresh the token to validate it
+        try {
+            credential.refreshToken();
+        } catch (Exception e) {
+            throw new IOException("Failed to refresh OAuth token. Please verify your refresh token is valid and not expired. Error: " + e.getMessage(), e);
+        }
+        
         Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
                 .setApplicationName(APPLICATION_NAME)
                 .build();

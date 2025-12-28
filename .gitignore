@@ -1,2 +1,10 @@
 *.json
 .env
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Sensitive configuration files
+src/main/resources/application.properties
+target/classes/application.properties
